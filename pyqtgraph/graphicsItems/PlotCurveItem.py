@@ -140,6 +140,7 @@ class PlotCurveItem(GraphicsObject):
         ## If an orthogonal range is specified, mask the data now
         if orthoRange is not None:
             mask = (d2 >= orthoRange[0]) * (d2 <= orthoRange[1])
+            mask=mask[:len(d)] #bug correction 19/11/2019 - needed when stepMode=True
             d = d[mask]
             #d2 = d2[mask]
 
@@ -153,6 +154,7 @@ class PlotCurveItem(GraphicsObject):
             b = (np.nanmin(d), np.nanmax(d))
             if any(np.isinf(b)):
                 mask = np.isfinite(d)
+                mask=mask[:len(d)] #bug correction 19/11/2019 - needed when stepMode=True
                 d = d[mask]
                 if len(d) == 0:
                     return (None, None)
@@ -163,6 +165,7 @@ class PlotCurveItem(GraphicsObject):
         else:
             # include a percentile of data range
             mask = np.isfinite(d)
+            mask=mask[:len(d)] #bug correction 19/11/2019 - needed when stepMode=True
             d = d[mask]
             b = np.percentile(d, [50 * (1 - frac), 50 * (1 + frac)])
 
